@@ -1,0 +1,7 @@
+python-dotenv
+pandas
+
+azure-core
+azure-identity
+azure-purview-catalog
+azure-purview-administration

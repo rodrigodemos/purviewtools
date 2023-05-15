@@ -35,8 +35,8 @@ upload_path = args.upload_path if args.upload_path else os.getenv('UPLOAD_DIRECT
 
 #debug
 if args.debug or __debug__:
-    args.download = False
-    args.update = True
+    args.download = True
+    args.update = False
     args.keywords = 'sample'
     args.include_classifications = True
     args.include_contacts = True

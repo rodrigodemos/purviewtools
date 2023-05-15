@@ -10,7 +10,7 @@ def update_labels(purview_client, assets_df):
     for index, asset in assets_df.iterrows():
         asset_id = asset['assetId']
         labels = asset['labels'].split(',') if not isinstance(asset['labels'], float) else []
-        #purview_client.entity.set_labels(asset_id, labels)
+        purview_client.entity.set_labels(asset_id, labels)
 
 def update_contacts(purview_client, assets_df):
     for index, asset in assets_df.iterrows():

@@ -94,11 +94,11 @@ def export_data(output_df, download_path):
     #get current timestamp
     fileTS = datetime.datetime.now().strftime('%Y%m%d_%H%M%S')
 
-    output_file  = f'{download_path}\purview_export_{fileTS}.csv'
+    output_file  = f'{file_path}\purview_export_{fileTS}.csv'
 
     #create directory from download_path if it doesn't exist
-    if not os.path.exists(download_path):
-        os.makedirs(download_path)
+    if not os.path.exists(file_path):
+        os.makedirs(file_path)
 
     #save dataframe to file
     pd.DataFrame.to_csv(

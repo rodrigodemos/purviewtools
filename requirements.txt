@@ -3,5 +3,7 @@ pandas
 
 azure-core
 azure-identity
+azure-purview-account
+azure-purview-scanning
 azure-purview-catalog
 azure-purview-administration

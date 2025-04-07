@@ -19,12 +19,14 @@ parser.add_argument('--download', '-d', help='Download metadata from Purview', a
 parser.add_argument('--upload', '-u', help='Upload metadata to Purview', action='store_true')
 parser.add_argument('--update', '-p', help='Update metadata in Purview', action='store_true')
 parser.add_argument('--keywords', help='Keywords to search for in Purview')
-parser.add_argument('--filter', help='Filter to apply to search results')
+parser.add_argument('--filter', '-f', help='Filter to apply to search results')
+parser.add_argument('--expand','-e', help='Include additional asset data', action='store_true')
 parser.add_argument('--include_columns', help='Include columns with asset data', action='store_true')
 parser.add_argument('--include_classifications', help='Include classifications with asset data', action='store_true')
 parser.add_argument('--include_contacts', help='Include contacts with asset data', action='store_true')
 parser.add_argument('--include_tags', help='Include tags with asset data', action='store_true')
 parser.add_argument('--include_glossary', help='Include glossary terms with asset data', action='store_true')
+parser.add_argument('--include_fabricInfo', help='Include info related to MS Fabric with asset data', action='store_true')
 args = parser.parse_args()
 
 # Use info from arguments if available, otherwise use environment variables
@@ -32,16 +34,6 @@ load_dotenv()
 purview_account = args.purview_account if args.purview_account else os.getenv('PURVIEW_ACCOUNT_NAME')
 download_path = args.download_path if args.download_path else os.getenv('DOWNLOAD_DIRECTORY')
 upload_path = args.upload_path if args.upload_path else os.getenv('UPLOAD_DIRECTORY')
-
-#debug
-if args.debug or __debug__:
-    args.download = True
-    args.update = False
-    args.keywords = 'sample'
-    args.include_classifications = True
-    args.include_contacts = True
-    args.include_tags = True
-    args.include_glossary = True
 
 # Route based on task from arguments
 if args.download:
@@ -52,12 +44,14 @@ if args.download:
 
         output_df = pvdown.create_output_dataframe(
             purview_client, 
-            pv_search_df, 
+            pv_search_df,
+            args.expand,
             args.include_columns, 
             args.include_classifications, 
             args.include_contacts,
             args.include_tags,
-            args.include_glossary
+            args.include_glossary,
+            args.include_fabricInfo
         )
         
         pvdown.export_data(output_df, download_path)

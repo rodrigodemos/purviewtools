@@ -7,3 +7,4 @@ azure-purview-account
 azure-purview-scanning
 azure-purview-catalog
 azure-purview-administration
+azure-purview-datamap

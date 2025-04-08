@@ -22,6 +22,7 @@ def create_output_dataframe(
         'collectionId',
         'collectionName',
         'assetDescription',
+        'sensitivityLabelId',
         'qualifiedName'
     ]
     if include_classifications:
@@ -39,17 +40,18 @@ def create_output_dataframe(
     
     for index, asset in search_df.iterrows():
 
+        row_data = {
+            'assetId': asset.get('id', None),
+            'assetName': asset.get('name', None),
+            'entityType': asset.get('entityType', None),
+            'collectionId': asset.get('collectionId', None),
+            'assetDescription': None,
+            'sensitivityLabelId': asset.get('sensitivityLabelId', None),
+            'qualifiedName': asset.get('qualifiedName', None)
+        }
+
         if expand:
             pv_asset = pvutils.get_asset(purview_client, asset['id'])
-
-            row_data = {
-                'assetId': pv_asset['entity']['guid'],
-                'assetName': pv_asset['entity']['attributes']['displayName'],
-                'entityType': pv_asset['entity']['typeName'],
-                'collectionId': pv_asset['entity']['collectionId'],
-                'assetDescription': pv_asset['entity']['attributes']['description'],
-                'qualifiedName': pv_asset['entity']['attributes']['qualifiedName']
-            }
             
             if include_classifications:
                 asset_classifications = ''
@@ -113,15 +115,6 @@ def create_output_dataframe(
                 row_data['reportType'] = reportType
                 row_data['modifiedBy'] = modifiedBy
                 row_data['configuredBy'] = configuredBy
-        else:
-            row_data = {
-                'assetId': asset['id'],
-                'assetName': asset['name'],
-                'entityType': asset['entityType'],
-                'collectionId': asset['collectionId'],
-                'assetDescription': None,
-                'qualifiedName': asset['qualifiedName']
-            }
 
         row_df = pd.DataFrame.from_records([row_data])
         output_df = pd.concat([output_df, row_df], ignore_index=True)
